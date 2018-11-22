@@ -1,0 +1,45 @@
+<div class="container">
+	
+  <div class="card">
+    
+    <div class="card-header">
+        <h2>Login or Register</h2>
+    </div>
+    <div class="card-body">
+
+    <div class="alert alert-danger" *ngIf="errorMessage">{{errorMessage}}</div>
+
+      <form #loginForm="ngForm" >
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+          </div>
+          <input  name="email" [(ngModel)]="email" #emailRef="ngModel"
+          [ngClass]="{'is-invalid': emailRef.invalid && emailRef.touched,
+           'is-valid': emailRef.valid && emailRef.touched}"
+           pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          class="form-control" placeholder="email" required email="true">
+          
+        </div>
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="far fa-eye-slash"></i></span>
+          </div>
+          <input type="password" name="password" [(ngModel)]="password" #passwordRef="ngModel"
+          [ngClass]="{'is-invalid': passwordRef.invalid && passwordRef.touched,
+          'is-valid': passwordRef.valid && passwordRef.touched}"
+          class="form-control" placeholder="password" required minlength="6">
+        </div>
+      </form>
+    </div>
+    
+    <div class="card-footer">
+          <button type="button" class="btn btn-primary" (click)="signUp()" [disabled]="loginForm.invalid">Register</button>
+        
+          <button type="button" class="btn btn-success" (click)="signIn()" [disabled]="loginForm.invalid">Login</button>
+    </div>
+    
+
+  </div>
+
+</div>

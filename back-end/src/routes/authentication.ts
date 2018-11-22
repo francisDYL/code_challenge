@@ -6,21 +6,34 @@ const authRoutes = express.Router();
 
 authRoutes.post('/api/signup',passport.authenticate('signUp'),
 (req: Request,res: Response)=>{
-    
+    req.session.user = req.user;
     res.status(200);
     res.json(req.user);
 });
 
 authRoutes.post('/api/signin',passport.authenticate('signIn'),
 (req: Request,res: Response)=>{
+    req.session.user = req.user;
     res.status(200);
     res.json(req.user);
 });
 
 authRoutes.post('/api/logout',(req, res) =>{
-    req.logout();
+    req.session.destroy((error)=>{
+        console.log(error);
+    });
     res.status(200);
     res.json({message:'successfully logout'});
+});
+
+authRoutes.post('/api/isauth',(req, res) =>{
+   if(req.session.user){
+       res.json({sate:true,user:req.session.user});
+   }
+   else{
+    res.json({sate:false,user:null});
+   }
+
 });
 
 /*authRoutes.get('/api/authError',(req, res)=>{

@@ -53,7 +53,7 @@ passport.use('signIn', new LocalStrategy({
   }
 }));
 
-/*passport.serializeUser(function(user: any, done) {
+passport.serializeUser(function(user: any, done) {
   done(null, user.id);
 });
 
@@ -61,4 +61,8 @@ passport.deserializeUser(function(id, done) {
   User.findById(id, function(err, user) {
     done(err, user);
   });
-});*/
+});
+
+export let isAuthenticated = (req, res: Response) => {
+  return req.isAuthenticated()
+};

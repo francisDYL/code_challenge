@@ -7,7 +7,7 @@ import passport from 'passport';
 import mongoose from "mongoose";
 import {corsOptions} from "./config/cors.config";
 import {MONGO_URI} from "./config/database.config";
-import authRoutes from "./routes/authentification";
+import authRoutes from "./routes/authentication";
 const app =  express();
 
 mongoose.connect(MONGO_URI, {useMongoClient: true}).then(
@@ -32,6 +32,5 @@ app.get("/",(req:Request,res:Response)=>{
     res.send("welcome");
 });
 
-app.post("/signUp",passport.authenticate('signUp'));
 
 export default app;

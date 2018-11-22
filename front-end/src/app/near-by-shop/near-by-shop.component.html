@@ -1,0 +1,15 @@
+<div class="card-columns" *ngFor="let shop of nearByShops">
+{{user.id}}
+  <div class="card">
+      <div class="card-header">
+          <h4 class="card-title">{{shop.name}}</h4>
+      </div>
+      <div class="card-body">
+        <p class="card-text">some text here</p>
+      </div>
+      <div class="card-footer">
+        <a href=""><button type="button" class="btn btn-danger">Dislike</button></a>
+        <a href=""><button type="button" class="btn btn-success">Like</button></a>
+      </div>
+    </div>
+</div>
