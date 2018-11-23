@@ -14,6 +14,7 @@ authRoutes.post('/api/signup',passport.authenticate('signUp'),
 authRoutes.post('/api/signin',passport.authenticate('signIn'),
 (req: Request,res: Response)=>{
     req.session.user = req.user;
+    console.log(req.session);
     res.status(200);
     res.json(req.user);
 });

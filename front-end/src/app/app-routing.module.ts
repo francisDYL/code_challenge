@@ -7,7 +7,8 @@ import {AuthGuard} from './auth/auth.guard';
 const routes: Routes = [
   {path: '', redirectTo: 'welcome', pathMatch: 'full'},
   {path: 'welcome', component: WelcomeComponent},
-  {path: 'nearbyshops', canActivate: [AuthGuard], component: NearByShopComponent},
+  {path: 'nearByShops', component: NearByShopComponent}
+  /*{path: 'nearByShops', canActivate: [AuthGuard], component: NearByShopComponent}*/
 ];
 
 @NgModule({

@@ -1,4 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {ShopService} from '../shop/shop.service';
+
+
 
 @Component({
   selector: 'app-near-by-shop',
@@ -7,12 +10,26 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class NearByShopComponent implements OnInit {
 
-  nearByShops: Array<any>;
-  constructor() { }
+  private error;
+  nearByShops: [];
+  constructor(private _shopService: ShopService) { }
 
   ngOnInit() {
-    this.nearByShops = [{name: 'shop1', distance: 10}, {name: 'shop2', distance: 5}, {name: 'shop3', distance: 9}];
-
+    this._shopService.getShops().subscribe(
+      data  => { this.nearByShops = data; },
+      error => this.errorHandler(error)
+    );
   }
+
+  addPreferredSop(index) {
+    this._shopService.addPreferredShop(JSON.stringify(this.nearByShops[index])).subscribe (
+      data => console.log(data),
+      error => console.log(error)
+    );
+    }
+
+  errorHandler(error) {
+    this.error = error;
+}
 
 }

@@ -48,6 +48,6 @@ export class WelcomeComponent implements OnInit {
 
   successHandler(data) {
     this._authService.sendUserDetails(data);
-    this.router.navigate(['/nearbyshops']);
+    this.router.navigate(['/nearByShops']);
   }
 }

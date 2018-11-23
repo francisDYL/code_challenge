@@ -22,8 +22,9 @@ mongoose.connect(MONGO_URI, {useMongoClient: true}).then(
 app.set("port", process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({secret: 'challenge', resave: true, saveUninitialized: true}));
 app.use(cors(corsOptions));
+app.use(session({secret: 'challenge', resave: true, saveUninitialized: true,cookie:{secure: false, httpOnly: false}}));
+
 //app.use(flash);
 app.use(passport.initialize());
 app.use(passport.session());

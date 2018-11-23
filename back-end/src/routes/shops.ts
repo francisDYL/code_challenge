@@ -9,10 +9,11 @@ import { API_KEY, LIMIT, RADIUS } from "../config/tomtom.config";
 
 const shopsRoutes = express.Router();
 
-shopsRoutes.post('/api/getshops', async (req:Request,res: Response)=>{
-    let lat = req.body.lat || 33.5724108;
-    let lon = req.body.lon || -7.6570333;
+shopsRoutes.post('/api/getShops',async(req: Request,res: Response)=>{
 
+    let lat = req.body.lat;
+    let lon = req.body.lon;
+    
     let data = await fetchData (lat,lon);
     let shops = filterFields(data["results"])
     
@@ -20,8 +21,9 @@ shopsRoutes.post('/api/getshops', async (req:Request,res: Response)=>{
 });
 
 shopsRoutes.post('/api/addPreferredShop',(req: Request,res: Response)=>{
-    
-         Shop.create(req.body.shop,(error,savedShop)=>{
+        let shop = JSON.parse(req.body.shop);
+        console.log(req.session);
+         /*Shop.create(req.body.shop,(error,savedShop)=>{
              if(error){
                 res.status(400);
                 res.json({success: false, shops:null});
@@ -29,9 +31,7 @@ shopsRoutes.post('/api/addPreferredShop',(req: Request,res: Response)=>{
                 res.status(200);
                 res.json({success: true, shop: savedShop});
              }
-         });
-        
-        
+         });*/
         
 });
 

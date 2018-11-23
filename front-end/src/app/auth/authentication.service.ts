@@ -2,7 +2,7 @@ import { Injectable, ErrorHandler } from '@angular/core';
 import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { Observable, throwError, Subject } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import {API_URL} from './api';
+import {API_URL} from '../config/api';
 
 @Injectable({
   providedIn: 'root'
