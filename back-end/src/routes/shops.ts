@@ -1,7 +1,6 @@
 import express,{Request,Response}  from "express";
 import https from 'https';
-import passport from "passport";
-import "../config/passport.config";
+import {checkToken} from './authentication';
 import Shop from '../models/Shop';
 import { API_KEY, LIMIT, RADIUS } from "../config/tomtom.config";
 
@@ -9,56 +8,59 @@ import { API_KEY, LIMIT, RADIUS } from "../config/tomtom.config";
 
 const shopsRoutes = express.Router();
 
-shopsRoutes.post('/api/getShops',async(req: Request,res: Response)=>{
+shopsRoutes.post('/api/getShops', checkToken, async(req: Request,res: Response)=>{
 
     let lat = req.body.lat;
     let lon = req.body.lon;
     
-    let data = await fetchData (lat,lon);
-    let shops = filterFields(data["results"])
+    try{
+        let data = await fetchData (lat,lon);
+        let shops = filterFields(data["results"]);
+
+        res.status(200);
+        res.json({error:null,shops:shops});
+    }
+    catch(error){
+        res.status(500);
+        res.json({error: 'internal server error'});
+    }
+});
+
+shopsRoutes.post('/api/addPreferredShop', checkToken, async(req: Request,res: Response)=>{
+        let name = req.body.shopName;
+        let address = req.body.shopAddress;
+        let userId = req.body.user._id;
+
+        try{
+            let savedShop = await Shop.create({name, address, userId});
+        
+            res.status(200);
+            res.json({success: true, shop: savedShop});
+        }
+        catch(error){
+            res.status(500);
+            res.json({error: 'internal server error'});
+        } 
+        
+});
+
+shopsRoutes.post('/api/getPreferredShop', checkToken, async(req: Request, res:Response)=>{
     
-    res.json(shops);
+    try{
+        let preferredShop = await Shop.find({userId:req.body.user._id});
+        res.status(200);
+        res.json({error: null, preferredShop: preferredShop});
+    }
+    catch(error){
+        res.status(500);
+        res.json({error: 'internal server error'});
+    }
+
 });
 
-shopsRoutes.post('/api/addPreferredShop',(req: Request,res: Response)=>{
-        let shop = JSON.parse(req.body.shop);
-        console.log(req.session);
-         /*Shop.create(req.body.shop,(error,savedShop)=>{
-             if(error){
-                res.status(400);
-                res.json({success: false, shops:null});
-             } else {
-                res.status(200);
-                res.json({success: true, shop: savedShop});
-             }
-         });*/
-        
-});
+shopsRoutes.post('/api/deletePreferredShop', checkToken, (req: Request,res: Response)=>{
 
-shopsRoutes.post('/api/getPreferredShop',(req: Request, res:Response)=>{
-    console.log(req.body);
-         Shop.find({userId:req.body.id},(error, preferredShop)=>{
-            if (error) {
-                res.status(400);
-                res.json({success: false, shops:null});
-            } else {
-                res.status(200);
-                res.json({success: true, shops: preferredShop});
-            }
-         });
-        
-});
-
-shopsRoutes.post('/api/deletePreferredShop',(req: Request,res: Response)=>{
-
-        Shop.deleteOne({_id:req.body.id},(error)=>{
-            if(error) {
-                res.status(400);
-                res.json({success:false});
-            } else {
-                res.json({success:true});
-            }
-        })
+        res.json({error:null})
 });
 
  function fetchData(lat,lon){

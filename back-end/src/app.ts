@@ -1,9 +1,9 @@
 import express, {Request, Response} from 'express'
 import bodyParser from "body-parser";
-import session from 'express-session';
+//import session from 'express-session';
 //import flash from 'express-flash';
 import cors from "cors";
-import passport from 'passport';
+//import passport from 'passport';
 import mongoose from "mongoose";
 import {corsOptions} from "./config/cors.config";
 import {MONGO_URI} from "./config/database.config";
@@ -23,11 +23,10 @@ app.set("port", process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
-app.use(session({secret: 'challenge', resave: true, saveUninitialized: true,cookie:{secure: false, httpOnly: false}}));
+//app.use(session({secret: 'challenge', resave: true, saveUninitialized: true,cookie:{secure: false, httpOnly: false}}));
 
-//app.use(flash);
-app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.initialize());
+//app.use(passport.session());
 
 app.use(authRoutes);
 app.use(shopsRoutes);
