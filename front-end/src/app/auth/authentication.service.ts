@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { Observable, throwError, Subject } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import {API_URL} from '../config/api';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,13 @@ import {API_URL} from '../config/api';
 export class AuthenticationService {
 
   private isLogin = false;
-  private userDetails = new Subject<any>();
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   signIn(email, password): Observable<any> {
     return this.http.post<any>(API_URL + '/signin', {'email': email, 'password': password})
-             .pipe(
-                  catchError(this.errorHandler)
-              );
+                    .pipe(
+                         catchError(this.errorHandler)
+                    );
   }
 
   signUp(email, password): Observable<any> {
@@ -28,35 +28,19 @@ export class AuthenticationService {
   }
 
   isAuthenticated(): boolean {
-    let result = false;
-    this.http.post<any>(API_URL + '/isauth', {})
-            .pipe(
-              catchError(this.errorHandler)
-            )
-            .subscribe(
-              data => {
-                if (data.state) {
-                  this.sendUserDetails(data.user);
-                  result = true;
-                }
-              }
-            );
-    return result;
+    if (localStorage.getItem('token') != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  getUserDetails(): Observable<any> {
-    return this.userDetails.asObservable();
-  }
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.clear();
 
-  sendUserDetails(user) {
-    this.userDetails.next(user);
-  }
-
-  logout(): Observable<any> {
-    return this.http.post<any>(API_URL + '/logout', {})
-                    .pipe(
-                      catchError(this.errorHandler)
-                    );
+    this.router.navigate(['/welcome']);
   }
 
   errorHandler(error: HttpErrorResponse) {

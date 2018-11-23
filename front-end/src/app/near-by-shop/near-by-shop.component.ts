@@ -10,26 +10,42 @@ import {ShopService} from '../shop/shop.service';
 })
 export class NearByShopComponent implements OnInit {
 
-  private error;
+  private errorMessage;
   nearByShops: [];
   constructor(private _shopService: ShopService) { }
 
   ngOnInit() {
-    this._shopService.getShops().subscribe(
-      data  => { this.nearByShops = data; },
+      navigator.geolocation.getCurrentPosition(this.getNearByShop.bind(this));
+
+  }
+
+  getNearByShop(position) {
+    this._shopService.getShops(position.coords.latitude, position.coords.longitude).subscribe(
+      data  => this.successHandler(data, 'nearby'),
       error => this.errorHandler(error)
-    );
+  );
   }
 
   addPreferredSop(index) {
-    this._shopService.addPreferredShop(JSON.stringify(this.nearByShops[index])).subscribe (
-      data => console.log(data),
+    const preferredShop = this.nearByShops[index];
+    this._shopService.addPreferredShop(preferredShop['name'], preferredShop['address']).subscribe (
+      data => this.successHandler(data, 'addpreferred'),
       error => console.log(error)
     );
     }
 
   errorHandler(error) {
-    this.error = error;
-}
+    this.errorMessage = 'server unreachable';
+  }
 
+  successHandler(data, type) {
+    if (data.error) {
+      this.errorMessage = data.error;
+    } else {
+      switch (type) {
+        case 'nearby': this.nearByShops = data.shops;
+        break;
+      }
+    }
+  }
 }

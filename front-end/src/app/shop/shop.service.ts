@@ -10,36 +10,35 @@ import {API_URL} from '../config/api';
 })
 export class ShopService {
 
-  lat;
-  lon;
-  coords = {lat: 33.9793414, lon: -6.9273035};
   constructor(private http: HttpClient) { }
 
-  getShops(): Observable<any> {
+  getShops(lat, lon): Observable<any> {
 
-    this.getCoords();
-    return this.http.post<any>(API_URL + '/getshops', {'lat': this.coords.lat , 'lon': this.coords.lon})
+    return this.http.post<any>(API_URL + '/getshops', {
+              'lat': lat || 33.9793414,
+              'lon': lon || -6.9273035,
+              'token': localStorage.getItem('token')})
              .pipe(
                   catchError(this.errorHandler)
               );
   }
 
-  addPreferredShop(shop): Observable<any> {
-    return this.http.post<any>(API_URL + '/addPreferredShop', {'shop': shop})
+  addPreferredShop(name, address): Observable<any> {
+    return this.http.post<any>(API_URL + '/addpreferredshop', {'name': name, 'address': address})
              .pipe(
                   catchError(this.errorHandler)
               );
   }
 
-  getPreferredShop(id): Observable<any> {
-    return this.http.post<any>(API_URL + '/getPreferredShop', {'id': id})
+  getPreferredShop(): Observable<any> {
+    return this.http.post<any>(API_URL + '/getpreferredshop', {})
              .pipe(
                   catchError(this.errorHandler)
               );
   }
 
-  deletePreferredShop(shop): Observable<any> {
-    return this.http.post<any>(API_URL + '/deletePreferredShop', {'shop': shop})
+  deletePreferredShop(): Observable<any> {
+    return this.http.post<any>(API_URL + '/deletepreferredshop', {})
              .pipe(
                   catchError(this.errorHandler)
               );
@@ -49,29 +48,5 @@ export class ShopService {
     return throwError(error.message || 'server error');
   }
 
-
-  latLon() {
-
-     return new Promise (resolve => {
-       navigator.geolocation.getCurrentPosition(function(place) {
-         resolve ( [place.coords.latitude, place.coords.longitude]);
-      });
-    });
-
-}
-
- getCoords () {
-    this.latLon().then((data) => {
-    this.coords.lat = data[0];
-    this.coords.lon = data[1];
-   });
-}
-
-todo () {
-  navigator.geolocation.getCurrentPosition(function(place) {
-    return {lat: place.coords.latitude, lon: place.coords.longitude};
-  });
-
-}
 
 }

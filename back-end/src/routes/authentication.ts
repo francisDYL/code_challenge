@@ -4,7 +4,7 @@ import User from '../models/User';
 import { SECRET_KEY,EXPIRE_DATE} from '../config/jwt.config'
 const authRoutes = express.Router();
 
-authRoutes.post('/api/signUp',async (req: Request,res: Response) => {
+authRoutes.post('/api/signup',async (req: Request,res: Response) => {
 
     let email = req.body.email;
     let password = req.body.email;
@@ -32,20 +32,20 @@ authRoutes.post('/api/signUp',async (req: Request,res: Response) => {
     
 });
 
-authRoutes.post('/api/signIn',async (req: Request,res: Response) => {
+authRoutes.post('/api/signin',async (req: Request,res: Response) => {
     let email = req.body.email;
     let password = req.body.password;
 
     try{
         const user = await User.findOne({ email });
         if( !user ){
-            res.status(404);
+            res.status(200);
             res.json({error: 'User not found check email!'});
         } else {
             const hashPassword = user.toObject().password;
             const isValid = await user.schema.methods.isValidPassword(password,hashPassword);
             if(!isValid){
-                res.status(403);
+                res.status(200);
                 res.json({error: 'Invalid password'});
             }
             else{    
@@ -86,7 +86,7 @@ export let checkToken = (req: Request, res: Response, next) => {
 
 
 
-authRoutes.post('/api/isAuth',checkToken,(req: Request, res: Response) =>{
+authRoutes.post('/api/isauth',checkToken,(req: Request, res: Response) =>{
     res.status(200);
     res.json({isAuth: true});
 });

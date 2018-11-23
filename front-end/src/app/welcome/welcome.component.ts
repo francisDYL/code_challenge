@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../auth/authentication.service';
 import {Router} from '@angular/router';
+import { identifierModuleUrl } from '@angular/compiler';
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
@@ -19,35 +20,39 @@ export class WelcomeComponent implements OnInit {
   }
 
   OnDestroy(): void {
-
   }
+
   signIn() {
     this._authService.signIn(this.email, this.password).subscribe(
       data => this.successHandler(data),
-      error => this.errorHandler('signIn')
+      error => this.errorHandler(error)
     );
   }
 
   signUp() {
    this._authService.signUp(this.email, this.password).subscribe(
      data => this.successHandler(data),
-     error => this.errorHandler('signUp')
+     error => this.errorHandler(error)
    );
 
   }
 
-  errorHandler(type: String) {
+  errorHandler(error) {
       this.email = '';
       this.password = '';
-      if (type === 'signIn') {
-        this.errorMessage = 'incorrect email or password';
-      } else {
-        this.errorMessage = 'An account using this email already exist';
-      }
+      this.errorMessage = 'server unreachable';
   }
 
   successHandler(data) {
-    this._authService.sendUserDetails(data);
-    this.router.navigate(['/nearByShops']);
+    if (data.error) {
+      this.email = '';
+      this.password = '';
+      this.errorMessage = data.error;
+    } else {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', data.user.email);
+      this.router.navigate(['/nearByShops']);
+    }
   }
+
 }

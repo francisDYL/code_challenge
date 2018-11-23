@@ -35,7 +35,7 @@ shopsRoutes.post('/api/addPreferredShop', checkToken, async(req: Request,res: Re
             let savedShop = await Shop.create({name, address, userId});
         
             res.status(200);
-            res.json({success: true, shop: savedShop});
+            res.json({error: null, shop: savedShop});
         }
         catch(error){
             res.status(500);
@@ -49,7 +49,7 @@ shopsRoutes.post('/api/getPreferredShop', checkToken, async(req: Request, res:Re
     try{
         let preferredShop = await Shop.find({userId:req.body.user._id});
         res.status(200);
-        res.json({error: null, preferredShop: preferredShop});
+        res.json({error: null, preferredShops: preferredShop});
     }
     catch(error){
         res.status(500);
