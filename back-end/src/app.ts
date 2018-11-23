@@ -8,6 +8,8 @@ import mongoose from "mongoose";
 import {corsOptions} from "./config/cors.config";
 import {MONGO_URI} from "./config/database.config";
 import authRoutes from "./routes/authentication";
+import shopsRoutes from './routes/shops';
+
 const app =  express();
 
 mongoose.connect(MONGO_URI, {useMongoClient: true}).then(
@@ -27,6 +29,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(authRoutes);
+app.use(shopsRoutes);
 
 app.get("/",(req:Request,res:Response)=>{
     res.send("welcome");

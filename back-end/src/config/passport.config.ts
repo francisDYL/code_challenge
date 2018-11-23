@@ -63,6 +63,6 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-export let isAuthenticated = (req, res: Response) => {
-  return req.isAuthenticated()
+export let isAuthenticated = (req, res, next) => {
+  if(req.session.user) {return next();}
 };
