@@ -20,8 +20,10 @@ authRoutes.post('/api/signup',async (req: Request,res: Response) => {
         } else{ 
         const user = await User.create({ email, password });
         let token = jwt.sign({user: user}, SECRET_KEY, { expiresIn: EXPIRE_DATE });
+        req.body.token = token;
+        req.body.user = user;
         res.status(200);
-        res.json({error: null,token: token, user: user});
+        res.json({error: null, token: token, user: user});
 
       }
     }
@@ -50,8 +52,10 @@ authRoutes.post('/api/signin',async (req: Request,res: Response) => {
             }
             else{    
             let token = jwt.sign({user: user}, SECRET_KEY, { expiresIn: EXPIRE_DATE });
+            req.body.token = token;
+            req.body.user = user;
             res.status(200);
-            res.json({error: null,token: token, user: user});
+            res.json({error: null, token: token, user: user});
 
             }
         } 
@@ -65,37 +69,22 @@ authRoutes.post('/api/signin',async (req: Request,res: Response) => {
 
 export let checkToken = (req: Request, res: Response, next) => {
 
-    let token = req.body.token || req.query.token || req.headers['x-access-token'];
+        let token = req.body.token;
         jwt.verify(token, SECRET_KEY, (error,data) => {
             if(error){
                 res.status(401);
                 res.json({error: 'Unauthorized request'});
             } else {
-                if(data.user){
                     req.body.user = data.user;
                     next();
                 }
-                else{
-                    res.status(401);
-                    res.json({error: 'Unauthorized request'});
-                }
-            }
         });
 
 }
 
-
-
 authRoutes.post('/api/isauth',checkToken,(req: Request, res: Response) =>{
     res.status(200);
-    res.json({isAuth: true});
+    res.json({error:null, isAuth: true});
 });
-
-//remeber to remove this one
-authRoutes.post('/api/test',checkToken, (req: Request, res: Response) => {
-    res.json(req.body.user);
-});
-
-
 
 export default authRoutes;

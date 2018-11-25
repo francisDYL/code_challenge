@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AuthenticationService {
 
-  private isLogin = false;
+  private user = new Subject<any>();
   constructor(private http: HttpClient, private router: Router) { }
 
   signIn(email, password): Observable<any> {
@@ -29,6 +29,7 @@ export class AuthenticationService {
 
   isAuthenticated(): boolean {
     if (localStorage.getItem('token') != null) {
+      this.user.next(localStorage.getItem('user'));
       return true;
     } else {
       return false;
@@ -42,6 +43,10 @@ export class AuthenticationService {
 
     this.router.navigate(['/welcome']);
   }
+
+  getUser(): Observable<any> {
+    return this.user.asObservable();
+}
 
   errorHandler(error: HttpErrorResponse) {
     return throwError(error.message || 'server error');

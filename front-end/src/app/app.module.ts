@@ -6,19 +6,20 @@ import {FormsModule} from '@angular/forms';
 import {AuthenticationService} from './auth/authentication.service';
 import {ShopService} from './shop/shop.service';
 import {HttpClientModule} from '@angular/common/http';
+import {PreloadService} from './preload/preload.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RoutingComponents
+    RoutingComponents,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [AuthenticationService, ShopService],
+  providers: [AuthenticationService, ShopService, PreloadService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

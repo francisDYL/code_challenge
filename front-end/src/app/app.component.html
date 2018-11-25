@@ -1,29 +1,55 @@
-<nav class="navbar navbar-expand-md bg-dark navbar-dark" *ngIf="user">
-  <a class="navbar-brand" href="/">NearByShops</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="/nearByShops">NearbyShops</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">PreferredShop</a>
-      </li>
-    </ul>
-    <div class="my-2 my-lg-0">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{user}}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <span (click)="logout()">Logout</span>
-            </div>
-        </li>
+<nav *ngIf="userEmail">
+    <div class="nav-wrapper green darken-1">
+      <a  class="brand-logo">NearByShops</a>
+      <a  data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/nearByShops">NearbyShops</a></li>
+        <li><a href="/preferredShops">PreferredShop</a></li>
+        <li><a (click)="logout()">Logout</a></li>
+      </ul>
     </div>
-  </div>  
 </nav>
-<br/>
 
-<router-outlet></router-outlet>
+  <ul class="sidenav green darken-1" id="mobile-demo">
+    <li><a href="/nearByShops" class="white-text">NearbyShops</a></li>
+    <li><a href="/preferredShops" class="white-text">PreferredShop</a></li>
+    <li><a (click)="logout()" class="white-text">Logout</a></li>
+  </ul>
+
+  <button data-target="modal2" class="btn modal-trigger hide" id="messageButton">Modal2</button>
+  <button data-target="modal1" class="btn modal-trigger hide" id="preloadButton">Modal</button>
+
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal transparent opacity">
+        <div class="row modal-content">
+          <div class="col m2 offset-m5 s2 offset-s5">
+              <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-green-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div><div class="gap-patch">
+                    <div class="circle"></div>
+                  </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Modal Structure -->
+      <div id="modal2" class="modal">
+        <div class="modal-content">
+          <h4>{{message.type}}</h4>
+          <p>{{message.content}}</p>
+        </div>
+        <div class="modal-footer">
+          <a class="modal-close waves-effect waves-green btn-flat">OK</a>
+        </div>
+      </div>
+
+
+  <router-outlet></router-outlet>
+

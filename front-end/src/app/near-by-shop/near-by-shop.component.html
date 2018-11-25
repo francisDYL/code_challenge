@@ -1,14 +1,17 @@
-<div class="card-columns" *ngFor="let shop of nearByShops; let i = index">
-  <div class="card">
-      <div class="card-header">
-          <h4 class="card-title">{{shop.name}}</h4>
-      </div>
-      <div class="card-body">
-        <p class="card-text">{{shop.address}}</p>
-      </div>
-      <div class="card-footer">
-        <button type="button" class="btn btn-danger">Dislike</button>
-        <button type="button" class="btn btn-success" (click)="addPreferredSop(i)">Like</button>
+<div class="container">
+<div class="row">
+    <div class="col s12 m6" *ngFor="let shop of nearByShops; let i = index">
+      <div class="card green darken-1">
+        <div class="card-content white-text">
+          <span class="card-title">{{shop.name}}</span>
+          <p>{{shop.address}}</p>
+        </div>
+        <div class="card-action">
+            <a class="waves-effect waves-green btn-small white green-text text-darken-1" (click)="addPreferredSop(i)">Like</a>
+        </div>
       </div>
     </div>
 </div>
+</div>
+
+ 

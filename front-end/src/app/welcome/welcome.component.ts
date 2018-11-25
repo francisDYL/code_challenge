@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../auth/authentication.service';
 import {Router} from '@angular/router';
-import { identifierModuleUrl } from '@angular/compiler';
+import { PreloadService } from '../preload/preload.service';
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
@@ -11,9 +11,9 @@ export class WelcomeComponent implements OnInit {
 
   email: String;
   password: String;
-  errorMessage: String;
 
-  constructor(private _authService: AuthenticationService, private router: Router) { }
+  constructor(private _authService: AuthenticationService, private router: Router,
+    private _preloadService: PreloadService) { }
 
   ngOnInit() {
 
@@ -23,6 +23,7 @@ export class WelcomeComponent implements OnInit {
   }
 
   signIn() {
+    this._preloadService.setLoadingState(true);
     this._authService.signIn(this.email, this.password).subscribe(
       data => this.successHandler(data),
       error => this.errorHandler(error)
@@ -30,9 +31,10 @@ export class WelcomeComponent implements OnInit {
   }
 
   signUp() {
-   this._authService.signUp(this.email, this.password).subscribe(
-     data => this.successHandler(data),
-     error => this.errorHandler(error)
+    this._preloadService.setLoadingState(true);
+    this._authService.signUp(this.email, this.password).subscribe(
+      data => this.successHandler(data),
+       error => this.errorHandler(error)
    );
 
   }
@@ -40,14 +42,16 @@ export class WelcomeComponent implements OnInit {
   errorHandler(error) {
       this.email = '';
       this.password = '';
-      this.errorMessage = 'server unreachable';
+      this._preloadService.setLoadingState(false);
+      this._preloadService.sendMessage({type: 'Error', content: 'server unreachable'});
   }
 
   successHandler(data) {
     if (data.error) {
       this.email = '';
       this.password = '';
-      this.errorMessage = data.error;
+      this._preloadService.setLoadingState(false);
+      this._preloadService.sendMessage({type: 'Error', content: data.error});
     } else {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', data.user.email);

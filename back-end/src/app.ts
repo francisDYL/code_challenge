@@ -1,6 +1,6 @@
 import express, {Request, Response} from 'express'
 import bodyParser from "body-parser";
-//import session from 'express-session';
+import session from 'express-session';
 //import flash from 'express-flash';
 import cors from "cors";
 //import passport from 'passport';
@@ -23,7 +23,7 @@ app.set("port", process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
-//app.use(session({secret: 'challenge', resave: true, saveUninitialized: true,cookie:{secure: false, httpOnly: false}}));
+app.use(session({secret: 'challenge', resave: true, saveUninitialized: true,cookie:{secure: false, httpOnly: false}}));
 
 //app.use(passport.initialize());
 //app.use(passport.session());

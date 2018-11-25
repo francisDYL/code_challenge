@@ -24,21 +24,31 @@ export class ShopService {
   }
 
   addPreferredShop(name, address): Observable<any> {
-    return this.http.post<any>(API_URL + '/addpreferredshop', {'name': name, 'address': address})
+    return this.http.post<any>(API_URL + '/addpreferredshop', {
+              'name': name,
+              'address': address,
+              'token': localStorage.getItem('token')
+            })
              .pipe(
                   catchError(this.errorHandler)
               );
   }
 
   getPreferredShop(): Observable<any> {
-    return this.http.post<any>(API_URL + '/getpreferredshop', {})
+    return this.http.post<any>(API_URL + '/getpreferredshop', {
+              'token': localStorage.getItem('token')
+              })
              .pipe(
                   catchError(this.errorHandler)
               );
   }
 
-  deletePreferredShop(): Observable<any> {
-    return this.http.post<any>(API_URL + '/deletepreferredshop', {})
+  deletePreferredShop(id, name): Observable<any> {
+    return this.http.post<any>(API_URL + '/deletepreferredshop', {
+              'token': localStorage.getItem('token'),
+              'id': id,
+              'name': name
+              })
              .pipe(
                   catchError(this.errorHandler)
               );

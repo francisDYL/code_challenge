@@ -1,0 +1,16 @@
+
+  <div class="container">
+    <div class="row">
+        <div class="col s12 m6" *ngFor="let shop of preferredShops; let i = index">
+            <div class="card green darken-1">
+              <div class="card-content white-text">
+                 <span class="card-title">{{shop.name}}</span>
+                  <p>{{shop.address}}</p>
+              </div>
+              <div class="card-action">
+                  <a class="waves-effect waves-light btn-small red white-text text-darken-1" (click)="deletePreferredSop(i)">Dislike</a>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>

@@ -5,7 +5,6 @@ import mongoose from "mongoose"
     name : {
       type : String,
       required : true,
-      unique : true
     },
     address: {
         type: String,

@@ -1,45 +1,54 @@
-<div class="container">
-	
-  <div class="card">
-    
-    <div class="card-header">
-        <h2>Login or Register</h2>
-    </div>
-    <div class="card-body">
 
-    <div class="alert alert-danger" *ngIf="errorMessage">{{errorMessage}}</div>
+   
+   <div class="container ">
+     <br/>
+     <div class="row ">
+      <form class="col s12 m6 offset-m3 green lighten-5" #loginForm="ngForm">
 
-      <form #loginForm="ngForm" >
-        <div class="input-group form-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+        <div class="row">
+          <div class="input-field col s12">
+            <input name="email" id="email" type="email" class="validate" 
+            required [(ngModel)]="email" #emailRef="ngModel"
+            [ngClass]="{'is-invalid': emailRef.invalid && emailRef.touched,
+            'is-valid': emailRef.valid && emailRef.touched}"
+            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+            <label for="email">Email</label>
           </div>
-          <input  name="email" [(ngModel)]="email" #emailRef="ngModel"
-          [ngClass]="{'is-invalid': emailRef.invalid && emailRef.touched,
-           'is-valid': emailRef.valid && emailRef.touched}"
-           pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-          class="form-control" placeholder="email" required email="true">
-          
+          <div *ngIf="emailRef.invalid && emailRef.touched" class="red-text">
+             Invalid email
         </div>
-        <div class="input-group form-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="far fa-eye-slash"></i></span>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="icon_telephone" type="password" name="password" id="password" required
+            [(ngModel)]="password" #passwordRef="ngModel"
+            [ngClass]="{'is-invalid': passwordRef.invalid && passwordRef.touched,
+            'is-valid': passwordRef.valid && passwordRef.touched}" minlength=6
+            >
+            <label for="password">Password</label>
+
           </div>
-          <input type="password" name="password" [(ngModel)]="password" #passwordRef="ngModel"
-          [ngClass]="{'is-invalid': passwordRef.invalid && passwordRef.touched,
-          'is-valid': passwordRef.valid && passwordRef.touched}"
-          class="form-control" placeholder="password" required minlength="6">
+
+          <div *ngIf="passwordRef.invalid && passwordRef.touched" class="red-text">
+            <div *ngIf="passwordRef.errors.required">
+              Password is required.
+            </div>
+            <div *ngIf="passwordRef.errors.minlength">
+              Password must be at least 6 characters long.
+            </div>
+          </div>
+          
+
+        </div>
+
+        <div class="row">
+          <div class="col s10 m10 offset-s1 offset-m1 ">
+              <button class="waves-effect waves-light btn blue darken-1" (click)="signUp()" [disabled]="loginForm.invalid">Register</button>
+              <button class="right waves-effect waves-light btn btn green darken-1" (click)="signIn()" [disabled]="loginForm.invalid">Login</button>
+          </div> 
         </div>
       </form>
     </div>
-    
-    <div class="card-footer">
-          <button type="button" class="btn btn-primary" (click)="signUp()" [disabled]="loginForm.invalid">Register</button>
-        
-          <button type="button" class="btn btn-success" (click)="signIn()" [disabled]="loginForm.invalid">Login</button>
     </div>
-    
-
-  </div>
-
-</div>
