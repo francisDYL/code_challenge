@@ -15,7 +15,7 @@ import mongoose from "mongoose"
         required: true
     }
   },{ timestamps: true });
-
+ShopSchema.set('autoIndex', false);
 const Shop = mongoose.model('shop',ShopSchema);
 
 export default Shop;

@@ -1,5 +1,9 @@
 
-  <div class="container">
+<div class="container" *ngIf="isEmpty">
+    <p>You don't have preferred shops</p>
+</div>
+
+  <div class="container" *ngIf="!isEmpty">
     <div class="row">
         <div class="col s12 m6" *ngFor="let shop of preferredShops; let i = index">
             <div class="card green darken-1">

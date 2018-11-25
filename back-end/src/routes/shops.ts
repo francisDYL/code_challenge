@@ -81,6 +81,7 @@ shopsRoutes.post('/api/deletepreferredshop', checkToken, (req: Request,res: Resp
         }
 });
 
+/* getting shops from tomtom API */
  function fetchData(lat,lon){
     var data='';
     return new Promise(resolve => {
@@ -102,7 +103,7 @@ shopsRoutes.post('/api/deletepreferredshop', checkToken, (req: Request,res: Resp
 }
 
 
-
+/* taking only some field from tomtomm api result */
 function filterFields(shops){
    const filteredShops = shops.map(shop =>{
          return {name:shop.poi.name,address:shop.address.freeformAddress}
@@ -111,6 +112,7 @@ function filterFields(shops){
 
 }
 
+/* function that remove preferred shop from near by shops list */
 function filterPreferred(shops,id){
   return new Promise(resolve => {  Shop.find({userId: id},((err,data)=>{
         let preferred = data.map(s=>s.toObject());
@@ -118,19 +120,20 @@ function filterPreferred(shops,id){
         if(preferred.length == 0 || shops.length == 0) {
             resolve(shops);
         } else {
-            let duplicated = shops.concat(preferred);
-            resolve(removeDuplicates(duplicated,'name'));
+
+            for (var i = 0; i < shops.length; i++){
+                for (var j = 0; j<preferred.length; j++){
+                    if(shops[i].name == preferred[j].name){
+                        shops.splice(i,1);
+                    }
+                }
+            }
+
+            resolve(shops);
         }
-        
-        
     }));
     });
 }
 
-function removeDuplicates(duplicate, property) {
-    return duplicate.filter((object, position, temp) => {
-        return temp.map(mapObj => mapObj[property]).indexOf(object[property]) === position;
-    });
-}
 
 export default shopsRoutes;

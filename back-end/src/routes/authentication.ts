@@ -67,6 +67,7 @@ authRoutes.post('/api/signin',async (req: Request,res: Response) => {
 
 });
 
+/* middleware to ensure that token from user is valid */
 export let checkToken = (req: Request, res: Response, next) => {
 
         let token = req.body.token;
@@ -82,6 +83,7 @@ export let checkToken = (req: Request, res: Response, next) => {
 
 }
 
+/* if the token is valid just said that user is authenticated */
 authRoutes.post('/api/isauth',checkToken,(req: Request, res: Response) =>{
     res.status(200);
     res.json({error:null, isAuth: true});

@@ -12,15 +12,18 @@ export class AppComponent implements OnDestroy {
 
   title = 'NearByShop';
   userEmail;
- /* private userEmail = 'test';*/
+
   message = {type: '', content: ''};
+  /* subscription to services in other to show preload animation and message from components */
   private userSubscription: Subscription;
   private preloadSubscription: Subscription;
   private messageSubscription: Subscription;
 
 
   constructor(private _authService: AuthenticationService, private _preloadService: PreloadService) {
+
     this.userSubscription = this._authService.getUser().subscribe(email => { this.userEmail = email; });
+
     this.preloadSubscription = this._preloadService.getLoadingState().subscribe(state => {
       this.showHidePreload(state);
     });
@@ -37,7 +40,7 @@ export class AppComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // unsubscribe to ensure no memory leaks
+    /* unsubscribe to ensure no memory leaks */
     this.userSubscription.unsubscribe();
     this.preloadSubscription.unsubscribe();
     this.messageSubscription.unsubscribe();
@@ -51,7 +54,8 @@ showHidePreload(state) {
     const testElements = document.getElementsByClassName('modal-overlay');
     Array.prototype.filter.call(testElements, function(testElement) {
       testElement.style.display = 'none';
-});
+    });
+    document.getElementById('body').style.overflow = 'visible';
   }
 
 }

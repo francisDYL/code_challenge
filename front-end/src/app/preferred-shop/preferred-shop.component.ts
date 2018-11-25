@@ -8,23 +8,14 @@ import { PreloadService } from '../preload/preload.service';
 })
 export class PreferredShopComponent implements OnInit {
 
- preferredShops: [];
- /*preferredShops;*/
+  preferredShops: [];
+  isEmpty = true;
+
   constructor(private _shopService: ShopService, private _preloadService: PreloadService) { }
 
   ngOnInit() {
     this.getPreferredShop();
-  /* this.preferredShops = [
-    {name: 'NAME1', address: 'ADD1'},
-    {name: 'NAME1', address: 'ADD1'},
-    {name: 'NAME1', address: 'ADD1'},
-    {name: 'NAME1', address: 'ADD1'},
-    {name: 'NAME1', address: 'ADD1'},
-    {name: 'NAME1', address: 'ADD1'},
-    {name: 'NAME1', address: 'ADD1'},
-    {name: 'NAME1', address: 'ADD1'},
-    {name: 'NAME1', address: 'ADD1'}
-  ];*/
+
   }
 
 
@@ -58,6 +49,7 @@ export class PreferredShopComponent implements OnInit {
       switch (type) {
         case 'preferred': {
           this.preferredShops = data.preferredShops;
+          if (this.preferredShops.length > 0) {this.isEmpty = false; }
           this._preloadService.setLoadingState(false);
         }
         break;

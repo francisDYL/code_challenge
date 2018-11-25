@@ -11,24 +11,13 @@ import { PreloadService } from '../preload/preload.service';
 })
 export class NearByShopComponent implements OnInit {
 
-  /*nearByShops;*/
+
   nearByShops: [];
+  isEmpty = true;
   constructor(private _shopService: ShopService, private _preloadService: PreloadService) { }
 
   ngOnInit() {
       navigator.geolocation.getCurrentPosition(this.getNearByShop.bind(this));
-    /* this.nearByShops = [
-       {name: 'NAME1', address: 'ADD1'},
-       {name: 'NAME1', address: 'ADD1'},
-       {name: 'NAME1', address: 'ADD1'},
-       {name: 'NAME1', address: 'ADD1'},
-       {name: 'NAME1', address: 'ADD1'},
-       {name: 'NAME1', address: 'ADD1'},
-       {name: 'NAME1', address: 'ADD1'},
-       {name: 'NAME1', address: 'ADD1'},
-       {name: 'NAME1', address: 'ADD1'}
-     ];*/
-
   }
 
   getNearByShop(position) {
@@ -59,8 +48,9 @@ export class NearByShopComponent implements OnInit {
     } else {
       switch (type) {
         case 'nearby': {
-          this._preloadService.setLoadingState(false);
           this.nearByShops = data.shops;
+          if (this.nearByShops.length > 0) { this.isEmpty = false; }
+          this._preloadService.setLoadingState(false);
         }
         break;
         case 'addpreferred': {
